@@ -540,6 +540,299 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
   </div>
 </section>
 
+<!-- ═══ ACADEMIC ACHIEVEMENTS ═══ -->
+<!-- ═══ ACADEMIC ACHIEVEMENTS ═══ -->
+<!-- ═══ ACADEMIC ACHIEVEMENTS ═══ -->
+<section
+  id="academic"
+  class="py-24 overflow-hidden"
+  x-data="{
+    active: 0,
+
+    achievements: [
+
+      {
+        image: 'images/KLP%20pfp.png',
+        year: '2026',
+        title: 'Bachelor of Computer Science',
+        description: 'Completed my academic journey in Computer Science at University of Computer Studies Taungoo.'
+      },
+
+      {
+        image: 'images/academic2.jpg',
+        year: '2025',
+        title: 'Award in Logo Competition for NPI',
+        description: 'Recognized for first runner up award of Naypyitaw Polytechnic Institute (NPI) Logo Competition.'
+      },
+
+      {
+        image: 'images/academic3.jpg',
+        year: '2025',
+        title: 'Outstanding Youth Award 2026 (Bago Region)',
+        description: 'Received the Outstanding Youth Award (Regional Level Award), International Youth Day 2026.'
+      },
+
+      {
+        image: 'images/academic4.png',
+        year: '2022',
+        title: 'Certification from Donato Design Institute',
+        description: 'Completed Mastering Adobe Photoshop course from Donato Design Institute.'
+      },
+
+      {
+        image: 'images/academic5.jpg',
+        year: '2026',
+        title: 'Certification from Myanmar Technology Gateway',
+        description: 'Completed Internship Program at Amuze Myanmar Creative Platform as UI/UX designer.'
+      }
+
+    ],
+
+    next() {
+      this.active = (this.active + 1) % this.achievements.length
+    },
+
+    prev() {
+      this.active = (this.active - 1 + this.achievements.length) % this.achievements.length
+    },
+
+    init() {
+      setInterval(() => {
+        this.next()
+      }, 10000)
+    }
+  }"
+>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.achievement-slide');
+const totalSlides = slides.length;
+
+function showSlide(index) {
+  currentSlide = (index + totalSlides) % totalSlides;
+
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('hidden', i !== currentSlide);
+  });
+}
+
+function nextSlide() {
+  showSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+  showSlide(currentSlide - 1);
+}
+
+// Initial slide
+showSlide(0);
+
+// Auto change every 8 seconds
+setInterval(() => {
+  nextSlide();
+}, 8000);
+</script>
+
+  <div class="max-w-6xl mx-auto px-6">
+
+
+    <!-- HEADER -->
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
+
+      <div>
+
+        <p class="reveal text-xs font-medium text-accent tracking-widest uppercase mb-3">
+          Milestones
+        </p>
+
+        <h2 class="reveal d1 font-display font-bold text-4xl md:text-5xl text-zinc-900 dark:text-white">
+          Qualifications & Achievements
+        </h2>
+
+        <p class="reveal d2 text-zinc-500 dark:text-zinc-400 mt-4 max-w-xl leading-relaxed">
+          A collection of milestones, certificates and achievements
+          from my learning journey.
+        </p>
+
+      </div>
+
+
+      <!-- PREV / NEXT BUTTONS -->
+      <div class="flex gap-2">
+
+        <button
+          @click="prev()"
+          aria-label="Previous achievement"
+          class="w-11 h-11 rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
+
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"/>
+
+          </svg>
+
+        </button>
+
+
+        <button
+          @click="next()"
+          aria-label="Next achievement"
+          class="w-11 h-11 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 flex items-center justify-center hover:opacity-80 transition">
+
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"/>
+
+          </svg>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- CAROUSEL -->
+    <div class="relative">
+
+
+      <!-- MAIN CARD -->
+      <div class="relative overflow-hidden rounded-3xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
+
+        <div class="grid md:grid-cols-2 min-h-[420px]">
+
+
+          <!-- IMAGE -->
+          <div class="relative aspect-square md:aspect-auto overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+
+            <template
+              x-for="(achievement, index) in achievements"
+              :key="index">
+
+              <img
+                :src="achievement.image"
+                :alt="achievement.title"
+                class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out"
+                :class="active === index
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 scale-105'"
+              >
+
+            </template>
+
+          </div>
+
+
+          <!-- TEXT -->
+          <div class="flex items-center p-8 md:p-12 lg:p-16">
+
+            <div class="w-full">
+
+              <div class="flex items-center gap-3 mb-6">
+
+                <span
+                  class="text-xs font-medium text-accent tracking-widest uppercase"
+                  x-text="achievements[active].year">
+                </span>
+
+                <span class="w-8 h-px bg-zinc-300 dark:bg-zinc-700"></span>
+
+                <span class="text-xs text-zinc-400">
+                  Achievement
+                </span>
+
+              </div>
+
+
+              <h3
+                class="font-display font-bold text-3xl md:text-4xl text-zinc-900 dark:text-white leading-tight mb-5"
+                x-text="achievements[active].title">
+              </h3>
+
+
+              <p
+                class="text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-md"
+                x-text="achievements[active].description">
+              </p>
+
+
+              <!-- COUNTER -->
+              <div class="mt-10 flex items-center justify-between">
+
+                <p class="text-xs text-zinc-400 tracking-widest uppercase">
+
+                  <span
+                    class="text-zinc-900 dark:text-white font-medium"
+                    x-text="String(active + 1).padStart(2, '0')">
+                  </span>
+
+                  <span class="mx-1">/</span>
+
+                  <span>05</span>
+
+                </p>
+
+
+                <p class="text-xs text-zinc-400">
+                  Learning Journey
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- DOTS -->
+      <div class="flex items-center justify-center gap-2 mt-6">
+
+        <template
+          x-for="(achievement, index) in achievements"
+          :key="index">
+
+          <button
+            @click="active = index"
+            :aria-label="'View ' + achievement.title"
+            class="h-1.5 rounded-full transition-all duration-300"
+            :class="active === index
+              ? 'w-10 bg-accent'
+              : 'w-2 bg-zinc-300 dark:bg-zinc-700'">
+          </button>
+
+        </template>
+
+      </div>
+
+
+    </div>
+
+  </div>
+  
+
+</section>
+
 <!-- ═══ TESTIMONIALS ═══ -->
 <!-- ═══ TESTIMONIALS ═══ -->
 <section id="reviews" class="py-24">
@@ -812,19 +1105,19 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
           </svg>
 
           <svg class="w-4 h-4 text-accent fill-current" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00-.951-.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>
 
           <svg class="w-4 h-4 text-accent fill-current" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00-.951-.69l3.461-.69a1 1 0 00.951-.69l1.07-3.292z"/>
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>
 
           <svg class="w-4 h-4 text-accent fill-current" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00-.951-.69l1.07-3.292z"/>
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>
 
           <svg class="w-4 h-4 text-accent fill-current" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l-1.07-3.292z"/>
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>
 
         </div>
@@ -865,15 +1158,15 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
           </svg>
 
           <svg class="w-4 h-4 text-accent fill-current" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00-.951-.69l1.07-3.292z"/>
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>
 
           <svg class="w-4 h-4 text-accent fill-current" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8 2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00-.951-.69l-1.07-3.292z"/>
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>
 
           <svg class="w-4 h-4 text-accent fill-current" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.784-.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
           </svg>
 
           <svg class="w-4 h-4 text-accent fill-current" viewBox="0 0 20 20">
