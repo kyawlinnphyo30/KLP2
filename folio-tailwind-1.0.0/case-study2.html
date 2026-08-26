@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="my"
+x-data="{
+  dark: localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches),
+  scrolled:false,
+  mobileMenu:false,
+  progress:0
+}"
+:class="{'dark':dark}"
+x-init="
+  $watch('dark', v => localStorage.setItem('theme', v ? 'dark' : 'light'));
+  window.addEventListener('scroll', () => {
+    scrolled = window.scrollY > 20;
+    progress = Math.min(100, Math.round(
+      (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+    ));
+  }, {passive:true});
+"
+class="scroll-smooth">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+content="Client Design Projects by Kyaw Linn Phyo, Senior Graphic Designer.">
+
+<title>My Clients — Client Design Projects · Portfolio</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap"
+rel="stylesheet">
+
+<script>
+tailwind.config = {
+  darkMode:'class',
+  theme:{
+    extend:{
+      fontFamily:{
+        display:['PT Sans','sans-serif'],
+        body:['DM Sans','sans-serif']
+      },
+      colors:{
+        accent:'#2e46e5',
+        'accent-light':'#4f62e0'
+      }
+    }
+  }
+}
+</script>
+
+<style>
+
+*,
+*::before,
+*::after{
+  box-sizing:border-box;
+}
+
+html{
+  font-family:'DM Sans',sans-serif;
+}
+
+h1,h2,h3{
+  font-family:'PT Sans',sans-serif;
+}
+
+body{
+  transition:background-color .3s,color .3s;
+}
+
+::-webkit-scrollbar{
+  width:5px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#2e46e5;
+  border-radius:99px;
+}
+
+.progress-bar{
+  position:fixed;
+  top:0;
+  left:0;
+  height:3px;
+  background:#2e46e5;
+  z-index:100;
+}
+
+.photo-frame{
+  position:relative;
+  overflow:hidden;
+  background:#e4e4e7;
+}
+
+.photo-frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .5s ease;
+}
+
+.photo-frame:hover img{
+  transform:scale(1.02);
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.prose-cs h2{
+  font-family:'PT Sans',sans-serif;
+  font-size:1.6rem;
+  font-weight:700;
+  margin:2.5rem 0 1rem;
+}
+
+.prose-cs p{
+  margin-bottom:1.2rem;
+  line-height:1.8;
+  color:#52525b;
+}
+
+.dark .prose-cs p{
+  color:#a1a1aa;
+}
+
+</style>
+
+</head>
+
+
+<body class="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-body antialiased">
+
+
+<!-- PROGRESS -->
+
+<div
+class="progress-bar"
+:style="`width:${progress}%`">
+</div>
+
+
+<!-- NAVIGATION -->
+
+<header
+class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+:class="scrolled
+? 'bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md shadow-sm'
+: 'bg-transparent'">
+
+<nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+
+<a
+href="index.html"
+class="font-display font-bold text-xl tracking-tight">
+
+<span class="text-zinc-900 dark:text-white">Kyaw</span><span class="text-accent">LinnPhyo</span>
+
+</a>
+
+
+<div class="flex items-center gap-3">
+
+<!-- Dark Mode -->
+
+<button
+@click="dark=!dark"
+class="w-9 h-9 flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800">
+
+<svg
+x-show="!dark"
+class="w-4 h-4"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+stroke-width="2"
+d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+
+</svg>
+
+<svg
+x-show="dark"
+class="w-4 h-4"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+stroke-width="2"
+d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707"/>
+
+</svg>
+
+</button>
+
+
+<a
+href="index.html#contact"
+class="hidden md:inline-flex bg-accent text-white text-sm font-medium px-5 py-2 rounded-full">
+
+Hire me →
+
+</a>
+
+
+<button
+@click="mobileMenu=!mobileMenu"
+class="md:hidden w-9 h-9 border border-zinc-200 dark:border-zinc-800 rounded-full">
+
+☰
+
+</button>
+
+</div>
+
+</nav>
+
+
+<!-- MOBILE MENU -->
+
+<div
+x-show="mobileMenu"
+x-cloak
+class="md:hidden bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-900">
+
+<div class="px-6 py-5 flex flex-col gap-4 text-sm">
+
+<a href="index.html#services">Services</a>
+
+<a href="projects.html" class="text-accent">
+Work
+</a>
+
+<a href="index.html#about">
+About
+</a>
+
+<a href="index.html#contact">
+Contact
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- HERO -->
+
+<section class="pt-32 pb-12">
+
+<div class="max-w-4xl mx-auto px-6">
+
+<a
+href="index.html"
+class="text-sm text-zinc-500 hover:text-accent">
+
+← Back to Home
+
+</a>
+
+
+<div class="flex flex-wrap gap-2 mt-8 mb-6">
+
+<span class="text-xs bg-orange-50 dark:bg-zinc-800 text-accent px-3 py-1 rounded-full">
+Client Work
+</span>
+
+<span class="text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-full">
+Graphic Design
+</span>
+
+</div>
+
+
+<h1
+class="reveal font-display font-bold text-5xl md:text-6xl leading-tight mb-6">
+
+My Clients
+
+</h1>
+
+
+<p
+class="reveal text-xl text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-2xl">
+
+Client တစ်ဦးချင်းစီရဲ့ လိုအပ်ချက်နဲ့ Brand Direction
+အပေါ်မူတည်ပြီး ဖန်တီးပေးခဲ့တဲ့ Graphic Design Projects
+တွေထဲက Selected Works အချို့ကို ဒီနေရာမှာ ဖော်ပြထားပါတယ်။
+
+</p>
+
+
+<div
+class="reveal grid grid-cols-2 md:grid-cols-4 gap-5 mt-10 pt-7 border-t border-zinc-100 dark:border-zinc-900">
+
+<div>
+<p class="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+Focus
+</p>
+<p class="font-medium text-sm">
+Client Design
+</p>
+</div>
+
+<div>
+<p class="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+Role
+</p>
+<p class="font-medium text-sm">
+Graphic Designer
+</p>
+</div>
+
+<div>
+<p class="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+Services
+</p>
+<p class="font-medium text-sm">
+Visual Design
+</p>
+</div>
+
+<div>
+<p class="text-xs text-zinc-400 uppercase tracking-widest mb-1">
+Tools
+</p>
+<p class="font-medium text-sm">
+Photoshop · Illustrator
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- HERO IMAGE -->
+
+<section class="max-w-5xl mx-auto px-6 mb-16">
+
+<div class="reveal photo-frame h-72 md:h-[480px] rounded-3xl">
+
+<img
+src="images/clients2.png"
+alt="Client Design Projects"
+loading="eager">
+
+</div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section class="max-w-3xl mx-auto px-6 prose-cs pb-8">
+
+<h2>Client Work အကြောင်း</h2>
+
+<p>
+
+Client Project တွေမှာ Design တစ်ခုချင်းစီကို
+လှပအောင်ဖန်တီးရုံသာမက Client ရဲ့ ရည်ရွယ်ချက်၊
+Target Audience နဲ့ အသုံးပြုမယ့် Platform ကိုပါ
+ထည့်သွင်းစဉ်းစားပြီး Design Direction ချမှတ်ပါတယ်။
+
+</p>
+
+<p>
+
+Social Media Content၊ Promotional Materials၊
+Event Design နဲ့ Marketing Visuals စတဲ့ Project
+အမျိုးမျိုးကို Client ရဲ့ Requirement နဲ့ကိုက်ညီအောင်
+ဖန်တီးပေးခဲ့ပါတယ်။
+
+</p>
+
+</section>
+
+
+<!-- SELECTED WORK -->
+
+<section class="max-w-5xl mx-auto px-6 mb-20">
+
+<div class="mb-7">
+
+<p class="text-xs font-medium text-accent tracking-widest uppercase mb-2">
+Selected Work
+</p>
+
+<h2 class="font-display font-bold text-3xl">
+Client Projects
+</h2>
+
+</div>
+
+
+<div class="reveal grid md:grid-cols-2 gap-5">
+
+
+<div class="photo-frame h-72 md:h-96 rounded-2xl">
+
+<img
+src="images/s3.jpg"
+alt="Client Design 01"
+loading="lazy">
+
+</div>
+
+
+<div class="photo-frame h-72 md:h-96 rounded-2xl">
+
+<img
+src="images/s5.jpg"
+alt="Client Design 02"
+loading="lazy">
+
+</div>
+
+
+<div class="photo-frame h-72 md:h-96 rounded-2xl">
+
+<img
+src="images/obs2.jpg"
+alt="Client Design 03"
+loading="lazy">
+
+</div>
+
+
+<div class="photo-frame h-72 md:h-96 rounded-2xl">
+
+<img
+src="images/obs3.jpg"
+alt="Client Design 04"
+loading="lazy">
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section class="bg-zinc-50 dark:bg-zinc-900/50 py-16">
+
+<div class="max-w-5xl mx-auto px-6">
+
+<p class="text-xs font-medium text-accent tracking-widest uppercase mb-2">
+What I Do
+</p>
+
+<h2 class="font-display font-bold text-3xl mb-8">
+Design Services
+</h2>
+
+
+<div class="grid md:grid-cols-3 gap-5">
+
+
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+
+<h3 class="font-display font-bold text-lg mb-2">
+Social Media Design
+</h3>
+
+<p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+Social Media Campaign၊ Promotional Post နဲ့
+Content Visual တွေကို Brand Direction နဲ့
+ကိုက်ညီအောင် ဖန်တီးပေးပါတယ်။
+</p>
+
+</div>
+
+
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+
+<h3 class="font-display font-bold text-lg mb-2">
+Marketing Design
+</h3>
+
+<p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+Marketing Campaign တွေအတွက် Poster၊
+Banner နဲ့ Promotional Materials တွေ
+ဖန်တီးပေးပါတယ်။
+</p>
+
+</div>
+
+
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+
+<h3 class="font-display font-bold text-lg mb-2">
+Event Design
+</h3>
+
+<p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+Event အတွက် Banner၊ Invitation၊
+Backdrop နဲ့ Supporting Visual Materials
+တွေကို Design လုပ်ပေးပါတယ်။
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PROCESS -->
+
+<section class="max-w-3xl mx-auto px-6 py-16 prose-cs">
+
+<h2>My Design Process</h2>
+
+<p>
+Project တစ်ခုချင်းစီကို Client ရဲ့ Brief ကို
+နားလည်ခြင်းကနေစပြီး Final Design အထိ
+ရိုးရှင်းပြီး ထိရောက်တဲ့ Process နဲ့
+လုပ်ဆောင်ပါတယ်။
+</p>
+
+
+<div class="space-y-4 mt-8">
+
+
+<div class="flex gap-4 p-5 bg-zinc-50 dark:bg-zinc-900 rounded-2xl">
+
+<div class="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center font-bold shrink-0">
+1
+</div>
+
+<div>
+
+<h3 class="font-display font-bold mb-1">
+Brief & Understanding
+</h3>
+
+<p class="text-sm">
+Client ရဲ့ Requirement၊ Target Audience နဲ့
+Project Goal ကို နားလည်အောင် လေ့လာပါတယ်။
+</p>
+
+</div>
+
+</div>
+
+
+<div class="flex gap-4 p-5 bg-zinc-50 dark:bg-zinc-900 rounded-2xl">
+
+<div class="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center font-bold shrink-0">
+2
+</div>
+
+<div>
+
+<h3 class="font-display font-bold mb-1">
+Design & Development
+</h3>
+
+<p class="text-sm">
+Concept နဲ့ Visual Direction ကို ဖန်တီးပြီး
+လိုအပ်တဲ့ Design Elements တွေကို ပေါင်းစပ်ပါတယ်။
+</p>
+
+</div>
+
+</div>
+
+
+<div class="flex gap-4 p-5 bg-zinc-50 dark:bg-zinc-900 rounded-2xl">
+
+<div class="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center font-bold shrink-0">
+3
+</div>
+
+<div>
+
+<h3 class="font-display font-bold mb-1">
+Revision & Final
+</h3>
+
+<p class="text-sm">
+Client Feedback အပေါ်မူတည်ပြီး ပြန်လည်ပြင်ဆင်ကာ
+Final Design ကို အသုံးပြုနိုင်တဲ့ Format နဲ့
+ပေးအပ်ပါတယ်။
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FINAL -->
+
+<section class="max-w-3xl mx-auto px-6 pb-20 prose-cs">
+
+<h2>Working With Clients</h2>
+
+<p>
+
+Client Project တွေကနေတစ်ဆင့် Different Industries,
+Different Audiences နဲ့ Different Design Requirements
+တွေကို လေ့လာခွင့်ရခဲ့ပါတယ်။
+
+</p>
+
+<p>
+
+ကျွန်တော့်ရဲ့ Design Approach က Creativity နဲ့
+Visual Quality ကို ထိန်းသိမ်းထားရင်း Client ရဲ့
+Business Goal ကို အထောက်အကူဖြစ်စေမယ့်
+Design Solution ကို ဖန်တီးပေးဖို့ ဖြစ်ပါတယ်။
+
+</p>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="py-20">
+
+<div class="max-w-5xl mx-auto px-6">
+
+<div class="bg-zinc-900 dark:bg-zinc-800 rounded-3xl p-10 md:p-14 text-center">
+
+<p class="text-xs font-medium text-accent tracking-widest uppercase mb-4">
+Let's Work Together
+</p>
+
+<h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4">
+Have a design project in mind?
+</h2>
+
+<p class="text-zinc-400 max-w-md mx-auto mb-7">
+Let's create visuals that communicate your brand clearly.
+</p>
+
+<a
+href="index.html#contact"
+class="inline-flex bg-accent text-white font-medium px-7 py-3 rounded-full hover:bg-accent-light transition">
+
+Start a project →
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="border-t border-zinc-100 dark:border-zinc-900">
+
+<div class="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+
+<p class="text-sm text-zinc-400">
+© <span id="yr"></span> Kyaw Linn Phyo. All rights reserved.
+</p>
+
+<p class="text-xs text-zinc-500">
+Senior Graphic Designer
+</p>
+
+</div>
+
+</footer>
+
+
+<script>
+
+document.getElementById('yr').textContent =
+new Date().getFullYear();
+
+
+const obs =
+new IntersectionObserver(
+entries => {
+
+entries.forEach(entry => {
+
+if(entry.isIntersecting){
+
+entry.target.classList.add('visible');
+
+obs.unobserve(entry.target);
+
+}
+
+});
+
+},
+{
+threshold:.08,
+rootMargin:'0px 0px -30px 0px'
+}
+);
+
+
+document
+.querySelectorAll('.reveal')
+.forEach(el => obs.observe(el));
+
+</script>
+
+
+</body>
+</html>

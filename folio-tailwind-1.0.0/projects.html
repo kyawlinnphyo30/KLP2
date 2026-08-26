@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="my"
+x-data="{
+  dark: localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches),
+  scrolled:false,
+  mobileMenu:false,
+  progress:0,
+  lightbox:false,
+  selectedImage:'',
+  selectedAlt:''
+}"
+:class="{'dark':dark}"
+x-init="
+  $watch('dark', v => localStorage.setItem('theme', v ? 'dark' : 'light'));
+
+  window.addEventListener('scroll', () => {
+    scrolled = window.scrollY > 20;
+    progress = Math.min(100, Math.round(
+      (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+    ));
+  }, {passive:true});
+"
+class="scroll-smooth">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+content="Creative Visuals and Graphic Design Portfolio by Kyaw Linn Phyo, Senior Graphic Designer.">
+
+<title>Creative Visuals — Kyaw Linn Phyo</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap"
+rel="stylesheet">
+
+<script>
+tailwind.config = {
+  darkMode:'class',
+  theme:{
+    extend:{
+      fontFamily:{
+        display:['PT Sans','sans-serif'],
+        body:['DM Sans','sans-serif']
+      },
+      colors:{
+        accent:'#2e46e5',
+        'accent-light':'#4f62e0'
+      }
+    }
+  }
+}
+</script>
+
+<style>
+
+*,
+*::before,
+*::after{
+  box-sizing:border-box;
+}
+
+html{
+  font-family:'DM Sans',sans-serif;
+}
+
+h1,h2,h3{
+  font-family:'PT Sans',sans-serif;
+}
+
+body{
+  transition:background-color .3s,color .3s;
+}
+
+::-webkit-scrollbar{
+  width:5px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#2e46e5;
+  border-radius:99px;
+}
+
+.progress-bar{
+  position:fixed;
+  top:0;
+  left:0;
+  height:3px;
+  background:#2e46e5;
+  z-index:100;
+}
+
+/* GALLERY */
+
+.gallery-item{
+  position:relative;
+  overflow:hidden;
+  background:#f4f4f5;
+}
+
+.dark .gallery-item{
+  background:#18181b;
+}
+
+.gallery-item img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  transition:transform .5s ease;
+}
+
+.gallery-item:hover img{
+  transform:scale(1.025);
+}
+
+/* REVEAL */
+
+.reveal{
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* LIGHTBOX */
+
+.lightbox-image{
+  max-width:90vw;
+  max-height:85vh;
+  object-fit:contain;
+}
+
+[x-cloak]{
+  display:none !important;
+}
+
+</style>
+
+</head>
+
+
+<body
+class="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-body antialiased">
+
+
+<!-- PROGRESS -->
+
+<div
+class="progress-bar"
+:style="`width:${progress}%`">
+</div>
+
+
+<!-- NAVIGATION -->
+
+<header
+class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+:class="scrolled
+? 'bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md shadow-sm'
+: 'bg-transparent'">
+
+<nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+
+
+<!-- LOGO -->
+
+<a
+href="index.html"
+class="font-display font-bold text-xl tracking-tight">
+
+<span class="text-zinc-900 dark:text-white">
+Kyaw
+</span><span class="text-accent">
+LinnPhyo
+</span>
+
+</a>
+
+
+<div class="flex items-center gap-3">
+
+
+<!-- DARK MODE -->
+
+<button
+@click="dark=!dark"
+class="w-9 h-9 flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800"
+aria-label="Toggle dark mode">
+
+<!-- Moon -->
+
+<svg
+x-show="!dark"
+class="w-4 h-4"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+stroke-width="2"
+d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+
+</svg>
+
+
+<!-- Sun -->
+
+<svg
+x-show="dark"
+class="w-4 h-4"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+stroke-width="2"
+d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l.707-.707M6.343 6.343l-.707-.707"/>
+
+</svg>
+
+</button>
+
+
+<!-- HIRE ME -->
+
+<a
+href="index.html#contact"
+class="hidden md:inline-flex bg-accent text-white text-sm font-medium px-5 py-2 rounded-full">
+
+Hire me →
+
+</a>
+
+
+<!-- MOBILE MENU -->
+
+<button
+@click="mobileMenu=!mobileMenu"
+class="md:hidden w-9 h-9 border border-zinc-200 dark:border-zinc-800 rounded-full"
+aria-label="Open menu">
+
+☰
+
+</button>
+
+</div>
+
+</nav>
+
+
+<!-- MOBILE MENU -->
+
+<div
+x-show="mobileMenu"
+x-cloak
+class="md:hidden bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-900">
+
+<div class="px-6 py-5 flex flex-col gap-4 text-sm">
+
+<a href="index.html#services">
+Services
+</a>
+
+<a
+href="projects.html"
+class="text-accent">
+
+Work
+</a>
+
+<a href="index.html#about">
+About
+</a>
+
+<a href="index.html#contact">
+Contact
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- HERO -->
+
+<section class="pt-32 pb-14">
+
+<div class="max-w-6xl mx-auto px-6">
+
+
+<a
+href="index.html"
+class="text-sm text-zinc-500 hover:text-accent transition">
+
+← Back to Home
+
+</a>
+
+
+<div class="mt-8 max-w-3xl">
+
+<p
+class="reveal text-xs font-medium text-accent tracking-widest uppercase mb-3">
+
+Creative Visuals
+
+</p>
+
+
+<h1
+class="reveal font-display font-bold text-5xl md:text-6xl leading-tight mb-6">
+
+Design Gallery
+
+</h1>
+
+
+<p
+class="reveal text-lg md:text-xl text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-2xl">
+
+These are some of my graphic design works,
+creative visuals and promotional materials
+created across different projects and industries.
+
+</p>
+
+</div>
+
+
+
+
+
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- GALLERY -->
+
+<section class="max-w-6xl mx-auto px-6 pb-24">
+
+
+<div class="flex items-end justify-between mb-8">
+
+<div>
+
+<p class="text-xs font-medium text-accent tracking-widest uppercase mb-2">
+Gallery
+</p>
+
+<h2 class="font-display font-bold text-3xl">
+Creative Visuals
+</h2>
+
+</div>
+
+
+<p class="hidden sm:block text-sm text-zinc-400">
+Click any design to view
+</p>
+
+</div>
+
+
+<!-- 30 DESIGNS -->
+
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+
+
+<!-- DESIGN 01 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-01.jpg';
+selectedAlt='Creative Design 01';
+">
+
+<img
+src="images/design-01.jpg"
+alt="Creative Design 01"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 02 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-02.jpg';
+selectedAlt='Creative Design 02';
+">
+
+<img
+src="images/design-02.jpg"
+alt="Creative Design 02"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 03 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-03.jpg';
+selectedAlt='Creative Design 03';
+">
+
+<img
+src="images/design-03.jpg"
+alt="Creative Design 03"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 04 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-04.jpg';
+selectedAlt='Creative Design 04';
+">
+
+<img
+src="images/design-04.jpg"
+alt="Creative Design 04"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 05 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-05.jpg';
+selectedAlt='Creative Design 05';
+">
+
+<img
+src="images/design-05.jpg"
+alt="Creative Design 05"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 06 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-06.jpg';
+selectedAlt='Creative Design 06';
+">
+
+<img
+src="images/design-06.jpg"
+alt="Creative Design 06"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 07 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-07.jpg';
+selectedAlt='Creative Design 07';
+">
+
+<img
+src="images/design-07.jpg"
+alt="Creative Design 07"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 08 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-08.jpg';
+selectedAlt='Creative Design 08';
+">
+
+<img
+src="images/design-08.jpg"
+alt="Creative Design 08"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 09 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-09.jpg';
+selectedAlt='Creative Design 09';
+">
+
+<img
+src="images/design-09.jpg"
+alt="Creative Design 09"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 10 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-10.jpg';
+selectedAlt='Creative Design 10';
+">
+
+<img
+src="images/design-10.jpg"
+alt="Creative Design 10"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 11 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-11.jpg';
+selectedAlt='Creative Design 11';
+">
+
+<img
+src="images/design-11.jpg"
+alt="Creative Design 11"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 12 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-12.jpg';
+selectedAlt='Creative Design 12';
+">
+
+<img
+src="images/design-12.jpg"
+alt="Creative Design 12"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 13 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-13.jpg';
+selectedAlt='Creative Design 13';
+">
+
+<img
+src="images/design-13.jpg"
+alt="Creative Design 13"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 14 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-14.jpg';
+selectedAlt='Creative Design 14';
+">
+
+<img
+src="images/design-14.jpg"
+alt="Creative Design 14"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 15 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-15.jpg';
+selectedAlt='Creative Design 15';
+">
+
+<img
+src="images/design-15.jpg"
+alt="Creative Design 15"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 16 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-16.jpg';
+selectedAlt='Creative Design 16';
+">
+
+<img
+src="images/design-16.jpg"
+alt="Creative Design 16"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 17 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-17.jpg';
+selectedAlt='Creative Design 17';
+">
+
+<img
+src="images/design-17.jpg"
+alt="Creative Design 17"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 18 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-18.jpg';
+selectedAlt='Creative Design 18';
+">
+
+<img
+src="images/design-18.jpg"
+alt="Creative Design 18"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 19 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-19.jpg';
+selectedAlt='Creative Design 19';
+">
+
+<img
+src="images/design-19.jpg"
+alt="Creative Design 19"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 20 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-20.jpg';
+selectedAlt='Creative Design 20';
+">
+
+<img
+src="images/design-20.jpg"
+alt="Creative Design 20"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 21 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-21.jpg';
+selectedAlt='Creative Design 21';
+">
+
+<img
+src="images/design-21.jpg"
+alt="Creative Design 21"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 22 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-22.jpg';
+selectedAlt='Creative Design 22';
+">
+
+<img
+src="images/design-22.jpg"
+alt="Creative Design 22"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 23 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-23.jpg';
+selectedAlt='Creative Design 23';
+">
+
+<img
+src="images/design-23.jpg"
+alt="Creative Design 23"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 24 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-24.jpg';
+selectedAlt='Creative Design 24';
+">
+
+<img
+src="images/design-24.jpg"
+alt="Creative Design 24"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 25 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-25.jpg';
+selectedAlt='Creative Design 25';
+">
+
+<img
+src="images/design-25.jpg"
+alt="Creative Design 25"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 26 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-26.jpg';
+selectedAlt='Creative Design 26';
+">
+
+<img
+src="images/design-26.jpg"
+alt="Creative Design 26"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 27 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-27.jpg';
+selectedAlt='Creative Design 27';
+">
+
+<img
+src="images/design-27.jpg"
+alt="Creative Design 27"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 28 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-28.jpg';
+selectedAlt='Creative Design 28';
+">
+
+<img
+src="images/design-28.jpg"
+alt="Creative Design 28"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 29 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-29.jpg';
+selectedAlt='Creative Design 29';
+">
+
+<img
+src="images/design-29.jpg"
+alt="Creative Design 29"
+loading="lazy">
+
+</div>
+
+
+<!-- DESIGN 30 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-30.jpg';
+selectedAlt='Creative Design 30';
+">
+
+<img
+src="images/design-30.jpg"
+alt="Creative Design 30"
+loading="lazy">
+
+</div>
+<!-- DESIGN 30 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-31.jpg';
+selectedAlt='Creative Design 31';
+">
+
+<img
+src="images/design-31.jpg"
+alt="Creative Design 31"
+loading="lazy">
+
+</div>
+<!-- DESIGN 32 -->
+
+<div
+class="gallery-item reveal aspect-square rounded-xl md:rounded-2xl cursor-pointer"
+@click="
+lightbox=true;
+selectedImage='images/design-32.jpg';
+selectedAlt='Creative Design 32';
+">
+
+<img
+src="images/design-32.jpg"
+alt="Creative Design 32"
+loading="lazy">
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="pb-24">
+
+<div class="max-w-6xl mx-auto px-6">
+
+<div
+class="bg-zinc-900 dark:bg-zinc-800 rounded-3xl p-10 md:p-14 text-center">
+
+<p
+class="text-xs font-medium text-accent tracking-widest uppercase mb-4">
+
+Let's Work Together
+
+</p>
+
+
+<h2
+class="font-display font-bold text-3xl md:text-4xl text-white mb-4">
+
+Have a design project in mind?
+
+</h2>
+
+
+<p
+class="text-zinc-400 max-w-md mx-auto mb-7">
+
+Let's create visuals that communicate your brand clearly.
+
+</p>
+
+
+<a
+href="index.html#contact"
+class="inline-flex bg-accent text-white font-medium px-7 py-3 rounded-full hover:bg-accent-light transition">
+
+Start a project →
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="border-t border-zinc-100 dark:border-zinc-900">
+
+<div
+class="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+
+<p class="text-sm text-zinc-400">
+
+© <span id="yr"></span> Kyaw Linn Phyo. All rights reserved.
+
+</p>
+
+
+<p class="text-xs text-zinc-500">
+
+Senior Graphic Designer
+
+</p>
+
+</div>
+
+</footer>
+
+
+<!-- LIGHTBOX -->
+
+<div
+x-show="lightbox"
+x-cloak
+x-transition
+@click.self="lightbox=false"
+@keydown.escape.window="lightbox=false"
+class="fixed inset-0 z-[200] bg-black/90 backdrop-blur-sm flex items-center justify-center p-5">
+
+
+<!-- CLOSE -->
+
+<button
+@click="lightbox=false"
+class="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl"
+aria-label="Close">
+
+×
+
+</button>
+
+
+<!-- IMAGE -->
+
+<img
+:src="selectedImage"
+:alt="selectedAlt"
+class="lightbox-image rounded-lg">
+
+</div>
+
+
+<script>
+
+document.getElementById('yr').textContent =
+new Date().getFullYear();
+
+
+/* SCROLL REVEAL */
+
+const obs =
+new IntersectionObserver(
+entries => {
+
+entries.forEach(entry => {
+
+if(entry.isIntersecting){
+
+entry.target.classList.add('visible');
+
+obs.unobserve(entry.target);
+
+}
+
+});
+
+},
+{
+threshold:.05,
+rootMargin:'0px 0px -30px 0px'
+}
+);
+
+
+document
+.querySelectorAll('.reveal')
+.forEach(el => obs.observe(el));
+
+
+/* ESCAPE LIGHTBOX */
+
+document.addEventListener('keydown', e => {
+
+if(e.key === 'Escape'){
+
+document.querySelector('[x-data]').__x?.$data &&
+(document.querySelector('[x-data]').__x.$data.lightbox = false);
+
+}
+
+});
+
+</script>
+
+
+</body>
+</html>
